@@ -1,7 +1,11 @@
 package edu.byu.cs.sonar;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import java.util.Scanner;
 
 /**
@@ -11,7 +15,7 @@ class CustomFileReader {
     /**
      * The scanner that will read the dictionary
      */
-    private Scanner s;
+    private String path;
 
     /**
      * The sentence that will be constructed
@@ -28,14 +32,9 @@ class CustomFileReader {
      * @param fileName the file to be read in
      */
     CustomFileReader(final String fileName) {
+        path = fileName;
         newSentence = "";
-        try {
-            s = new Scanner(new FileReader(fileName));
-        } catch (FileNotFoundException c) {
-            newSentence = "This isn't going to work out";
-        } finally {
-            count = 0;
-        }
+        count = 0;
     }
 
     /**
@@ -43,11 +42,12 @@ class CustomFileReader {
      *
      * @return how many words in the file
      */
-    int howManyWordsInFile() {
-
-        while (s.hasNext()) {
-            s.next();
-            count++;
+    int howManyWordsInFile() throws FileNotFoundException {
+        try (Scanner s = createScanner()) {
+            while (s.hasNext()) {
+                s.next();
+                count++;
+            }
         }
         return count;
     }
@@ -58,10 +58,12 @@ class CustomFileReader {
      * @param index which number word should be taken back
      * @return correct word
      */
-    String returnThatWord(final int index) {
+    String returnThatWord(final int index) throws FileNotFoundException {
         String returnWord = "";
-        for (int i = 0; i < index; i++) {
-            returnWord = s.next();
+        try (Scanner s = createScanner()) {
+            for (int i=0; i < index; i++) {
+                returnWord=s.next();
+            }
         }
         return returnWord;
     }
@@ -72,14 +74,17 @@ class CustomFileReader {
      *
      * @param letter eventually will be the character we are looking for in the word
      */
-    void findNewWord(final CharSequence letter) {
-        String word = s.next();
+    void findNewWord(final CharSequence letter) throws FileNotFoundException {
+        String word = "";
 
-        while (!word.contains(letter)) {
-            word = s.next();
+        try (Scanner s = createScanner()) {
+            word=s.next();
+
+            while (!word.contains(letter)) {
+                word=s.next();
+            }
         }
-
-        newSentence = newSentence + word + " ";
+            newSentence=newSentence + word + " ";
     }
 
     /**
@@ -115,20 +120,13 @@ class CustomFileReader {
      *
      * @return the number of words in the dictionary
      */
-    private Scanner getScanner() {
-        return s;
+    private String getPath() {
+        return path;
     }
 
-    /**
-     * Returns a hash number so this data type can be used for
-     * bucketing and stored in a Hash implementation like a
-     * HashMap, HashTable, HashSet, etc.
-     *
-     * @return hashcode for this specific instance of a reader
-     */
-    @Override
-    public int hashCode() {
-        return Integer.parseInt(newSentence) * count * 3;
+    private Scanner createScanner() throws FileNotFoundException {
+        return new Scanner(new InputStreamReader(
+                new FileInputStream(path), StandardCharsets.UTF_8));
     }
 
     /**
@@ -143,30 +141,15 @@ class CustomFileReader {
         return newSentence + " " + count;
     }
 
-    /**
-     * Checks if the object being processed is an
-     * instance of this exact class. That includes
-     * type and member variables.
-     *
-     * @param object data type sent to be processed
-     * @return true or false based on the processed object
-     */
     @Override
-    public boolean equals(final Object object) {
-        if (object.getClass() != this.getClass()) {
-            return false;
-        }
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        CustomFileReader that=(CustomFileReader) o;
+        return count == that.count && Objects.equals(path, that.path) && Objects.equals(newSentence, that.newSentence);
+    }
 
-        final CustomFileReader comparedReader = (CustomFileReader) object;
-
-        if (!comparedReader.getNewSentence().equals(newSentence)) {
-            return false;
-        }
-
-        if (comparedReader.getCount() != count) {
-            return false;
-        }
-
-        return comparedReader.getScanner() == s;
+    @Override
+    public int hashCode() {
+        return Objects.hash(path, newSentence, count);
     }
 }
