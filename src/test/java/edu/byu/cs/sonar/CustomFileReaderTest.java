@@ -62,14 +62,26 @@ class CustomFileReaderTest {
         sut.setNewSentence(sentence1);
         sut2.setNewSentence(sentence2);
 
-        assertEquals(sut, sut2);
+        boolean result = sut.equals(sut2);
+        assertTrue(result);
     }
 
     @Test
-    void testNotEquals() {
-        String sentence1 = "This is a Sentence.";
-        sut.setNewSentence(sentence1);
+    void testNotEqualsDifferentClass() {
+        boolean result = sut.equals(new Object());
+        assertFalse(result);
+    }
 
-      assertNotEquals(null, sut);
+    @Test
+    void testNotEqualsDifferentSentence() {
+        String sentence1 = "This is a Sentence.";
+
+        sut.setNewSentence(sentence1);
+        CustomFileReader sut2 = new CustomFileReader("readMe2.txt");
+        sut2.setNewSentence(sentence1);
+
+        boolean result = sut.equals(sut2);
+
+        assertFalse(result);
     }
 }
