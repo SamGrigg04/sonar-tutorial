@@ -14,7 +14,7 @@ class CustomFileReader {
     /**
      * The scanner that will read the dictionary
      */
-    private String path;
+    private final String path;
 
     /**
      * The sentence that will be constructed
@@ -74,7 +74,7 @@ class CustomFileReader {
      * @param letter eventually will be the character we are looking for in the word
      */
     void findNewWord(final CharSequence letter) throws FileNotFoundException {
-        String word = "";
+        String word;
 
         try (Scanner s = createScanner()) {
             word=s.next();
