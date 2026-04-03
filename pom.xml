@@ -46,6 +46,13 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit.jupiter.version}</version> <!-- or current -->
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <!-- Configuration here is used to configure plugins that can be run as part of a maven build -->
