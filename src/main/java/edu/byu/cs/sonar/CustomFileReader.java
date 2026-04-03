@@ -2,7 +2,6 @@ package edu.byu.cs.sonar;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
@@ -103,25 +102,6 @@ class CustomFileReader {
      */
     void setNewSentence(final String betterSentence) {
         newSentence = betterSentence;
-    }
-
-    /**
-     * This is a private getter since only this class will
-     * make use of it
-     *
-     * @return the number of words in the dictionary
-     */
-    private int getCount() {
-        return count;
-    }
-
-    /**
-     * This is another private getter
-     *
-     * @return the number of words in the dictionary
-     */
-    private String getPath() {
-        return path;
     }
 
     private Scanner createScanner() throws FileNotFoundException {
