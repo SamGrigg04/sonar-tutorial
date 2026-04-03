@@ -16,6 +16,7 @@
 
         <!-- Sonar specific properties -->
         <sonar.organization>samgrigg04</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 
         <!-- Tells Sonar this is a Java project -->
         <sonar.language>java</sonar.language>
