@@ -43,4 +43,33 @@ class CustomFileReaderTest {
         sut.setNewSentence(betterSentence);
         assertEquals(betterSentence, sut.getNewSentence());
     }
+
+    @Test
+    void testToString() {
+        String newSentence = "New Sentence.";
+        sut.setNewSentence(newSentence);
+        String expected = "New Sentence. 0";
+        assertEquals(expected, sut.toString());
+    }
+
+    @Test
+    void testEquals() {
+        String sentence1 = "This is a Sentence.";
+        String sentence2 = "This is a Sentence.";
+
+        CustomFileReader sut2 = new CustomFileReader("readMe1.txt");
+
+        sut.setNewSentence(sentence1);
+        sut2.setNewSentence(sentence2);
+
+        assertEquals(sut, sut2);
+    }
+
+    @Test
+    void testNotEquals() {
+        String sentence1 = "This is a Sentence.";
+        sut.setNewSentence(sentence1);
+
+      assertNotEquals(null, sut);
+    }
 }

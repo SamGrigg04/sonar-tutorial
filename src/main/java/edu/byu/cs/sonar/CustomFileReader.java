@@ -77,11 +77,10 @@ class CustomFileReader {
         String word;
 
         try (Scanner s = createScanner()) {
-            word=s.next();
 
-            while (!word.contains(letter)) {
-                word=s.next();
-            }
+          do {
+            word=s.next();
+          } while (!word.contains(letter));
         }
             newSentence=newSentence + word + " ";
     }
